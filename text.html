@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circular Text Animation</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: white;
+    }
+
+    .circle {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .arrow {
+      position: absolute;
+      font-size: 48px;
+      font-weight: 100;
+      color: black;
+    }
+
+    .arrow::before {
+      content: '\2192'; /* Unicode for right arrow */
+    }
+
+    .circle-text {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .circle-text span {
+      position: absolute;
+      font-family: 'Arial', sans-serif;
+      font-size: 16px;
+      color: black;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="circle">
+    <div class="arrow"></div>
+    <div class="circle-text"></div>
+  </div>
+
+  <script>
+    const text = "Follow me and be in touch Interested in quality design? ";
+    const circleText = document.querySelector('.circle-text');
+    const radius = 100;  // radius of the circle
+    const startAngle = 0; // starting angle in degrees
+    const speed = 0.1; // speed of rotation
+
+    // Create text spans
+    for (let i = 0; i < text.length; i++) {
+      const span = document.createElement('span');
+      span.textContent = text[i];
+      circleText.appendChild(span);
+    }
+
+    const letters = document.querySelectorAll('.circle-text span');
+
+    let angle = startAngle;
+    let animationId;
+
+    function animateText() {
+      const angleStep = 360 / letters.length; // step to position each letter
+
+      for (let i = 0; i < letters.length; i++) {
+        const x = radius * Math.cos((angle + i * angleStep) * Math.PI / 180);
+        const y = radius * Math.sin((angle + i * angleStep) * Math.PI / 180);
+
+        letters[i].style.transform = `translate(${x}px, ${y}px) rotate(${angle + i * angleStep + 90}deg)`;
+      }
+
+      angle += speed;
+
+      animationId = requestAnimationFrame(animateText);
+    }
+
+    animateText();
+  </script>
+</body>
+</html>
